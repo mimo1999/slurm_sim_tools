@@ -1,0 +1,76 @@
+ClusterName=user_scaling
+AuthType=auth/none
+SlurmUser=slurm
+SlurmdUser=root
+ControlMachine=localhost
+ControlAddr=localhost
+ReturnToService=1
+MessageTimeout=60
+JobRequeue=0
+JobCredentialPrivateKey=/home/slurm/work/tutorials/user_scaling/etc/slurm.key
+JobCredentialPublicCertificate=/home/slurm/work/tutorials/user_scaling/etc/slurm.cert
+SlurmdParameters=config_overrides
+ProctrackType=proctrack/pgid
+SwitchType=switch/none
+TopologyPlugin=topology/tree
+TaskPlugin=task/none
+FirstJobId=1001
+UsePAM=0
+GresTypes=gpu
+
+# TIMERS
+SlurmctldTimeout=300
+SlurmdTimeout=300
+InactiveLimit=0
+MinJobAge=300
+KillWait=30
+Waittime=0
+
+# SCHEDULING
+SchedulerType=sched/backfill
+SchedulerParameters=bf_max_job_user=200,bf_window=1440,bf_interval=30,bf_max_time=30,sched_interval=60,bf_max_job_test=1200,default_queue_depth=1200,bf_continue
+FairShareDampeningFactor=5
+SlurmSchedLogFile=/home/slurm/work/tutorials/user_scaling/log/sched.log
+SelectType=select/cons_tres
+SelectTypeParameters=CR_Core_Memory,CR_CORE_DEFAULT_DIST_BLOCK
+EnforcePartLimits=YES
+
+# LOGGING
+SlurmctldDebug=info
+SlurmdDebug=info
+DebugFlags=Backfill
+SlurmSchedLogLevel=1
+SlurmctldLogFile=/home/slurm/work/tutorials/user_scaling/log/slurmctld.log
+SlurmdLogFile=/home/slurm/work/tutorials/user_scaling/log/slurmd.log
+SlurmdSpoolDir=/home/slurm/work/tutorials/user_scaling/var/spool
+StateSaveLocation=/home/slurm/work/tutorials/user_scaling/var/state
+JobCompType=jobcomp/filetxt
+JobCompLoc=/home/slurm/work/tutorials/user_scaling/log/jobcomp.log
+
+# ACCOUNTING
+JobAcctGatherType=jobacct_gather/linux
+AccountingStorageType=accounting_storage/slurmdbd
+AccountingStorageEnforce=associations,limits,qos
+AccountingStoreFlags=job_comment
+AccountingStorageHost=localhost
+PropagateResourceLimits=NONE
+VSizeFactor=0
+KillOnBadExit=1
+FrontEndName=localhost
+
+# NODES
+NodeName=DEFAULT RealMemory=32000 Procs=8 Sockets=1 CoresPerSocket=8 ThreadsPerCore=1
+NodeName=N[1-2] State=UNKNOWN
+
+# PARTITIONS
+PartitionName=normal Nodes=N[1-2] Default=YES DefMemPerCPU=1000 MaxTime=INFINITE State=UP
+
+PriorityType=priority/multifactor
+PriorityDecayHalfLife=0-4
+PriorityFavorSmall=YES
+PriorityWeightFairshare=5000
+PriorityWeightAge=2000
+PriorityWeightPartition=0
+PriorityWeightJobSize=500
+PriorityWeightQOS=0
+PriorityMaxAge=0-5
