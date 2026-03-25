@@ -20,3 +20,5 @@ __pycache__
 /tutorials/micro_cluster/log
 /tutorials/micro_cluster/results
 
+slurm_install/
+simulation_run/
